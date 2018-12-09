@@ -9,6 +9,7 @@ public class Erotus implements Komento {
 	private Button nollaa;
     private Button undo;
     private Sovelluslogiikka sovellus;
+	private int edellinenLuku;
 
 	public Erotus(TextField tuloskentta, TextField syotekentta, Button nollaa, Button undo, Sovelluslogiikka sovellus) {
 		this.tuloskentta = tuloskentta;
@@ -27,11 +28,16 @@ public class Erotus implements Komento {
         } catch (Exception e) {
         }
 		
+		edellinenLuku = arvo;
+		
 		sovellus.miinus(arvo);
 		
 		int laskunTulos = sovellus.tulos();
-        
-        syotekentta.setText("");
+        paivitaFieldit(laskunTulos);
+	}
+	
+	private void paivitaFieldit(int laskunTulos) {
+		syotekentta.setText("");
         tuloskentta.setText("" + laskunTulos);
 		
 		if (laskunTulos == 0) {
@@ -44,6 +50,10 @@ public class Erotus implements Komento {
 	@Override
 	public void peru() {
 		System.out.println("undo pressed");
+		sovellus.plus(edellinenLuku);
+		
+		paivitaFieldit(sovellus.tulos());
+		undo.disableProperty().set(true);
 	}
 	
 }
